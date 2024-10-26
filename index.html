@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoundTrip</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+ <!-- Header -->
+ <header class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="text-2xl font-bold text-red-600">RoundTrip</div>
+      <nav class="space-x-4">
+        <a href="#" class="text-gray-600 hover:text-red-600" id="home-link">Inicio</a>
+        <a href="#" class="text-gray-600 hover:text-red-600" id="services-link">Servicios</a>
+        <a href="#" class="text-gray-600 hover:text-red-600" id="vehicles-link">Vehículos</a>
+        <a href="#" class="text-gray-600 hover:text-red-600" id="reviews-link">Reseñas</a>
+        <a href="#" class="text-gray-600 hover:text-red-600" id="contact-link">Contacto</a>
+      </nav>
+      <button onclick="toggleLanguage()" class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">EN / ES</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-cover bg-center h-80 flex items-center justify-center" style="background-image: url('https://s3.abcstatics.com/media/MM/2016/10/19/arenal-costa-rica-k7TE--1600x900@abc.jpg');">
+    <div class="text-center text-white">
+      <h1 class="text-4xl md:text-5xl font-bold mb-2" id="hero-title">Vehículos de calidad, experiencias inolvidables</h1>
+      <p class="text-lg md:text-xl" id="hero-subtitle">El viaje que imaginas, en el auto que necesitas</p>
+    </div>
+  </section>
+
+  <!-- Formulario de Búsqueda de Vehículos -->
+  <section class="container mx-auto px-4 py-8">
+    <form class="bg-white shadow-md rounded-lg p-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2" id="category-label" for="category">Categoría de Vehículos</label>
+        <select id="category" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Selecciona una categoría</option>
+          <option value="sedan">Sedán</option>
+          <option value="suv">SUV</option>
+          <option value="pickup">Pick-up</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2" id="pickup-location-label" for="pickup-location">Lugar de Recogida</label>
+        <select id="pickup-location" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Selecciona un lugar</option>
+          <option value="san-jose">San José</option>
+          <option value="liberia">Liberia</option>
+          <option value="alajuela">Alajuela</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2" id="dropoff-location-label" for="dropoff-location">Lugar de Entrega</label>
+        <select id="dropoff-location" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Selecciona un lugar</option>
+          <option value="san-jose">San José</option>
+          <option value="liberia">Liberia</option>
+          <option value="alajuela">Alajuela</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2" id="pickup-date-label" for="pickup-date">Fecha de Recogida</label>
+        <input type="date" id="pickup-date" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2" id="dropoff-date-label" for="dropoff-date">Fecha de Devolución</label>
+        <input type="date" id="dropoff-date" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="md:col-span-2 lg:col-span-3">
+        <button type="submit" id="search-btn" class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700">Buscar Vehículo</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Servicios -->
+  <section class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Nuestros Servicios</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white shadow-md rounded-lg p-6 text-center">
+        <img src="https://via.placeholder.com/100" alt="Servicio 1" class="mx-auto mb-4">
+        <h3 class="text-xl font-semibold text-gray-700">Servicio de Alquiler</h3>
+        <p class="text-gray-600">Alquila el vehículo perfecto para tu viaje.</p>
+      </div>
+      <div class="bg-white shadow-md rounded-lg p-6 text-center">
+        <img src="https://via.placeholder.com/100" alt="Servicio 2" class="mx-auto mb-4">
+        <h3 class="text-xl font-semibold text-gray-700">Asistencia en Carretera</h3>
+        <p class="text-gray-600">Disponibilidad 24/7 para tu tranquilidad.</p>
+      </div>
+      <div class="bg-white shadow-md rounded-lg p-6 text-center">
+        <img src="https://via.placeholder.com/100" alt="Servicio 3" class="mx-auto mb-4">
+        <h3 class="text-xl font-semibold text-gray-700">Vehículos de Lujo</h3>
+        <p class="text-gray-600">Viaja con estilo y confort en cualquier lugar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galería de Vehículos -->
+  <section class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Galería de Vehículos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <img src="https://via.placeholder.com/400" alt="Vehículo 1" class="w-full h-64 object-cover rounded-lg shadow-md">
+      <img src="https://via.placeholder.com/400" alt="Vehículo 2" class="w-full h-64 object-cover rounded-lg shadow-md">
+      <img src="https://via.placeholder.com/400" alt="Vehículo 3" class="w-full h-64 object-cover rounded-lg shadow-md">
+      <img src="https://via.placeholder.com/400" alt="Vehículo 4" class="w-full h-64 object-cover rounded-lg shadow-md">
+    </div>
+  </section>
+
+  <!-- Reseñas de Clientes -->
+  <section class="container mx-auto px-4 py-16 bg-gray-50">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Reseñas de Clientes</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <p class="text-gray-700">"Servicio excelente, los vehículos estaban en perfectas condiciones."</p>
+        <div class="mt-4 text-right text-gray-600 font-semibold">- Carlos M.</div>
+      </div>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <p class="text-gray-700">"Muy recomendable, excelente atención y asistencia."</p>
+        <div class="mt-4 text-right text-gray-600 font-semibold">- Ana P.</div>
+      </div>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <p class="text-gray-700">"Vehículos de lujo a un precio razonable, gran experiencia."</p>
+        <div class="mt-4 text-right text-gray-600 font-semibold">- Juan L.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulario de Contacto -->
+  <section class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Contáctanos</h2>
+    <form class="bg-white shadow-md rounded-lg p-8 max-w-md mx-auto">
+      <div class="mb-4">
+        <label class="block text-gray-700 font-semibold mb-2" for="name">Nombre</label>
+        <input type="text" id="name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 font-semibold mb-2" for="email">Correo Electrónico</label>
+        <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 font-semibold mb-2" for="message">Mensaje</label>
+        <textarea id="message" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+      </div>
+      <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">Enviar</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <p>&copy; 2024 CoolRides. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+<script src="js/index.js"></script>
+</body>
+</html>
