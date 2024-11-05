@@ -49,6 +49,9 @@
         <label for="passport" class="block mt-4 text-gray-700">Pasaporte:</label>
         <input type="text" id="passport" class="border border-gray-300 rounded p-2 w-full" required pattern="^([1-9][0-9]*)$" title="El pasaporte debe ser un número mayor a 9">
 
+        <label for="email" class="block mt-4 text-gray-700">Correo:</label>
+        <input type="email" id="email" class="border border-gray-300 rounded p-2 w-full" required>
+
         <button type="button" onclick="submitRentalForm()" class="mt-6 bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 w-full">Rentar</button>
       </form>
       <button onclick="closePopup()" class="mt-4 text-red-600 font-bold">Cancelar</button>
@@ -72,7 +75,7 @@
           <img src="${vehicle.imagen}" alt="${vehicle.marca}" class="mx-auto mb-4 rounded-lg shadow-md">
           <h3 class="text-xl font-semibold text-gray-700">${vehicle.marca} ${vehicle.modelo}</h3>
           <p class="text-gray-600">Precio por día: $${vehicle.precioDia}</p>
-          <button class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700" onclick="openPopup(${index})">Seleccionar</button>
+          <button class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700" onclick="selectVehicle(${index})">Seleccionar</button>
         `;
         vehicleCardsContainer.appendChild(vehicleCard);
       });
@@ -80,14 +83,27 @@
       vehicleCardsContainer.innerHTML = "<p>No se encontró información de vehículos.</p>";
     }
 
+    // Función para seleccionar un vehículo
+    function selectVehicle(index) {
+      const selectedVehicle = vehicleData[index];
+      localStorage.setItem("selectedVehicle", JSON.stringify(selectedVehicle));
+      openPopup();
+    }
+
     // Abrir el formulario pop-up y cargar datos
-    function openPopup(index) {
+    function openPopup() {
       // Obtener datos guardados en localStorage
       const pickupDate = localStorage.getItem("pickupDate");
       const dropoffDate = localStorage.getItem("dropoffDate");
       const pickupLocation = localStorage.getItem("pickupLocation");
       const dropoffLocation = localStorage.getItem("dropoffLocation");
       const selectedVehicle = JSON.parse(localStorage.getItem("selectedVehicle"));
+
+      // Verificar si selectedVehicle tiene datos
+      if (!selectedVehicle) {
+        alert("Error: No se ha seleccionado ningún vehículo.");
+        return;
+      }
 
       // Calcular el costo total
       const date1 = new Date(pickupDate);
@@ -117,6 +133,7 @@
       const name = document.getElementById("name").value;
       const lastname = document.getElementById("lastname").value;
       const passport = document.getElementById("passport").value;
+      const email = document.getElementById("email").value;
 
       if (!/^[1-9][0-9]*$/.test(passport)) {
         alert("El pasaporte debe ser un número mayor a 9.");
@@ -137,6 +154,7 @@
         name,
         lastname,
         passport,
+        email,
         fechaRecogida: pickupDate,
         fechaEntrega: dropoffDate,
         lugarRecogida: pickupLocation,
