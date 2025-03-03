@@ -1,3 +1,24 @@
+// Función para obtener las categorías desde el API y llenar el select
+function loadCategories() {
+  fetch("https://localhost:7184/Categoria")
+    .then(response => response.json())
+    .then(data => {
+      const categorySelect = document.getElementById("category");
+      categorySelect.innerHTML = '<option value="">Selecciona una categoría</option>'; // Reset options
+      
+      data.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category.idCategoria; // Ajusta según la estructura de la respuesta del API
+        option.textContent = category.categoria; // Ajusta según la estructura de la respuesta del API
+        categorySelect.appendChild(option);
+      });
+    })
+    .catch(error => console.error("Error al obtener categorías:", error));
+}
+
+// Cargar las categorías cuando la página haya cargado completamente
+document.addEventListener("DOMContentLoaded", loadCategories);
+
 document.getElementById("search-btn").addEventListener("click", function (event) {
   event.preventDefault(); // Evita el envío del formulario
 

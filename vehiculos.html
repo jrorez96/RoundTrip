@@ -10,192 +10,189 @@
   </head>
   <body class="bg-gray-100">
 
-    <!-- Header -->
     <header class="bg-white shadow-md">
-      <div
-        class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <div class="text-2xl font-bold text-red-600">RoundTrip</div>
-        <a href="index.html" class="text-gray-600 hover:text-red-600">Regresar a
-          Inicio</a>
+        <a href="index.html" class="text-gray-600 hover:text-red-600">Regresar a Inicio</a>
       </div>
     </header>
 
-    <!-- Contenedor de Vehículos -->
     <section class="container mx-auto px-4 py-8">
-      <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Vehículos
-        Disponibles</h2>
-
-      <!-- Contenedor de Tarjetas de Vehículos -->
-      <div id="vehicle-cards-container"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Las tarjetas se generarán aquí -->
-      </div>
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Vehículos Disponibles</h2>
+      <div id="vehicle-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </section>
 
-    <!-- Pop-up de Formulario -->
-    <div id="rental-popup"
-      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div id="rental-popup" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
       <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-4 text-gray-700">Formulario de
-          Renta</h2>
+        <h2 class="text-2xl font-bold mb-4 text-gray-700">Formulario de Renta</h2>
         <form id="rental-form">
-          <!-- Campos cargados desde localStorage -->
           <p><strong>Fecha Recogida:</strong> <span id="pickup-date"></span></p>
           <p><strong>Fecha Entrega:</strong> <span id="return-date"></span></p>
-          <p><strong>Lugar Recogida:</strong> <span
-              id="pickup-location"></span></p>
-          <p><strong>Lugar Entrega:</strong> <span
-              id="return-location"></span></p>
+          <p><strong>Lugar Recogida:</strong> <span id="pickup-location"></span></p>
+          <p><strong>Lugar Entrega:</strong> <span id="return-location"></span></p>
           <p><strong>Vehículo:</strong> <span id="vehicle-info"></span></p>
+          
+          <label for="insurance" class="block mt-4 text-gray-700">Seguro:</label>
+          <select id="insurance" class="border border-gray-300 rounded p-2 w-full" onchange="updateTotalCost()">
+            <option value="0">Seleccione un seguro</option>
+          </select>
+
+          <p><strong>Costo base:</strong> $200</p>
           <p><strong>Costo Total:</strong> $<span id="total-cost"></span></p>
 
-          <!-- Campos para ingresar datos -->
           <label for="name" class="block mt-4 text-gray-700">Nombre:</label>
-          <input type="text" id="name"
-            class="border border-gray-300 rounded p-2 w-full" required>
+          <input type="text" id="name" class="border border-gray-300 rounded p-2 w-full" required>
 
-          <label for="lastname"
-            class="block mt-4 text-gray-700">Apellido:</label>
-          <input type="text" id="lastname"
-            class="border border-gray-300 rounded p-2 w-full" required>
+          <label for="lastname" class="block mt-4 text-gray-700">Apellido:</label>
+          <input type="text" id="lastname" class="border border-gray-300 rounded p-2 w-full" required>
 
-          <label for="passport"
-            class="block mt-4 text-gray-700">Pasaporte:</label>
-          <input type="text" id="passport"
-            class="border border-gray-300 rounded p-2 w-full" required
-            pattern="^([1-9][0-9]*)$"
-            title="El pasaporte debe ser un número mayor a 9">
+          <label for="passport" class="block mt-4 text-gray-700">Pasaporte:</label>
+          <input type="text" id="passport" class="border border-gray-300 rounded p-2 w-full" required pattern="^([1-9][0-9]*)$" title="El pasaporte debe ser un número mayor a 9">
 
           <label for="email" class="block mt-4 text-gray-700">Correo:</label>
-          <input type="email" id="email"
-            class="border border-gray-300 rounded p-2 w-full" required>
+          <input type="email" id="email" class="border border-gray-300 rounded p-2 w-full" required>
 
-          <button type="button" onclick="submitRentalForm()"
-            class="mt-6 bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 w-full">Rentar</button>
+          <button type="button" onclick="submitRentalForm()" class="mt-6 bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 w-full">Rentar</button>
         </form>
-        <button onclick="closePopup()"
-          class="mt-4 text-red-600 font-bold">Cancelar</button>
+        <button onclick="closePopup()" class="mt-4 text-red-600 font-bold">Cancelar</button>
       </div>
     </div>
 
     <script>
-    // Obtener datos del vehículo de localStorage
-    const vehicleData = JSON.parse(localStorage.getItem("vehicleData"));
-    console.log("Datos cargados desde localStorage en vehiculos.html:", vehicleData);
+    function updateTotalCost() {
+  const insuranceSelect = document.getElementById("insurance");
+  const insuranceCost = parseFloat(insuranceSelect.value) || 0;
+  const insuranceName = insuranceSelect.options[insuranceSelect.selectedIndex].text.split(" - ")[0];
 
-    const rentalPopup = document.getElementById("rental-popup");
-    const vehicleCardsContainer = document.getElementById("vehicle-cards-container");
+  const selectedVehicle = JSON.parse(localStorage.getItem("selectedVehicle"));
+  const pickupDate = localStorage.getItem("pickupDate");
+  const dropoffDate = localStorage.getItem("dropoffDate");
+  const baseCost = 200;
 
-    // Verifica si hay datos y muestra una tarjeta por cada vehículo
-    if (vehicleData && vehicleData.length > 0) {
-      vehicleData.forEach((vehicle, index) => {
-        const vehicleCard = document.createElement("div");
-        vehicleCard.className = "bg-white shadow-md rounded-lg p-6 text-center";
-        vehicleCard.innerHTML = `
-          <img src="${vehicle.imagen}" alt="${vehicle.marca}" class="mx-auto mb-4 rounded-lg shadow-md">
-          <h3 class="text-xl font-semibold text-gray-700">${vehicle.marca} ${vehicle.modelo}</h3>
-          <p class="text-gray-600">Precio por día: $${vehicle.precioDia}</p>
-          <button class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700" onclick="selectVehicle(${index})">Seleccionar</button>
-        `;
-        vehicleCardsContainer.appendChild(vehicleCard);
+  if (!selectedVehicle || !pickupDate || !dropoffDate) return;
+
+  const date1 = new Date(pickupDate);
+  const date2 = new Date(dropoffDate);
+  const daysDiff = Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24));
+  const totalCost = selectedVehicle.precioDia * daysDiff + baseCost + insuranceCost;
+
+  document.getElementById("total-cost").textContent = totalCost.toFixed(2);
+  localStorage.setItem("insuranceName", insuranceName);
+  localStorage.setItem("insuranceCost", insuranceCost);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  const rentalPopup = document.getElementById("rental-popup");
+  const vehicleCardsContainer = document.getElementById("vehicle-cards-container");
+  
+  const vehicleData = JSON.parse(localStorage.getItem("vehicleData"));
+  if (vehicleData && vehicleData.length > 0) {
+    vehicleData.forEach((vehicle, index) => {
+      const vehicleCard = document.createElement("div");
+      vehicleCard.className = "bg-white shadow-md rounded-lg p-6 text-center";
+      vehicleCard.innerHTML = `
+        <img src="${vehicle.imagen}" alt="${vehicle.marca}" class="mx-auto mb-4 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold text-gray-700">${vehicle.marca} ${vehicle.modelo}</h3>
+        <p class="text-gray-600">Precio por día: $${vehicle.precioDia}</p>
+        <button class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700" onclick="selectVehicle(${index})">Seleccionar</button>
+      `;
+      vehicleCardsContainer.appendChild(vehicleCard);
+    });
+  }
+});
+
+ // Llamado al API para obtener seguros
+ fetch("https://localhost:7184/Seguros")
+    .then(response => response.json())
+    .then(data => {
+      const insuranceSelect = document.getElementById("insurance");
+      insuranceSelect.innerHTML = '<option value="0">Seleccione un seguro</option>';
+      
+      data.forEach(insurance => {
+        let option = document.createElement("option");
+        option.value = insurance.costo;
+        option.textContent = `${insurance.seguro} - $${insurance.costo}`;
+        insuranceSelect.appendChild(option);
       });
-    } else {
-      vehicleCardsContainer.innerHTML = "<p>No se encontró información de vehículos.</p>";
-    }
+    })
+    .catch(error => console.error("Error al cargar seguros:", error));
 
-    // Función para seleccionar un vehículo
-    function selectVehicle(index) {
-      const selectedVehicle = vehicleData[index];
-      localStorage.setItem("selectedVehicle", JSON.stringify(selectedVehicle));
-      openPopup();
-    }
+function selectVehicle(index) {
+  const vehicleData = JSON.parse(localStorage.getItem("vehicleData"));
+  const selectedVehicle = vehicleData[index];
+  localStorage.setItem("selectedVehicle", JSON.stringify(selectedVehicle));
+  openPopup();
+}
 
-    // Abrir el formulario pop-up y cargar datos
-    function openPopup() {
-      // Obtener datos guardados en localStorage
-      const pickupDate = localStorage.getItem("pickupDate");
-      const dropoffDate = localStorage.getItem("dropoffDate");
-      const pickupLocation = localStorage.getItem("pickupLocation");
-      const dropoffLocation = localStorage.getItem("dropoffLocation");
-      const selectedVehicle = JSON.parse(localStorage.getItem("selectedVehicle"));
+function openPopup() {
+  const pickupDate = localStorage.getItem("pickupDate");
+  const dropoffDate = localStorage.getItem("dropoffDate");
+  const pickupLocation = localStorage.getItem("pickupLocation");
+  const dropoffLocation = localStorage.getItem("dropoffLocation");
+  const selectedVehicle = JSON.parse(localStorage.getItem("selectedVehicle"));
 
-      // Verificar si selectedVehicle tiene datos
-      if (!selectedVehicle) {
-        alert("Error: No se ha seleccionado ningún vehículo.");
-        return;
-      }
+  if (!selectedVehicle || !pickupDate || !dropoffDate) return;
 
-      // Calcular el costo total
-      const date1 = new Date(pickupDate);
-      const date2 = new Date(dropoffDate);
-      const daysDiff = Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24));
-      const totalCost = selectedVehicle.precioDia * daysDiff;
+  document.getElementById("pickup-date").textContent = pickupDate;
+  document.getElementById("return-date").textContent = dropoffDate;
+  document.getElementById("pickup-location").textContent = pickupLocation;
+  document.getElementById("return-location").textContent = dropoffLocation;
+  document.getElementById("vehicle-info").textContent = `${selectedVehicle.marca} ${selectedVehicle.modelo}`;
 
-      // Cargar los datos en los elementos del formulario pop-up
-      document.getElementById("pickup-date").textContent = pickupDate || "Fecha no disponible";
-      document.getElementById("return-date").textContent = dropoffDate || "Fecha no disponible";
-      document.getElementById("pickup-location").textContent = pickupLocation || "Ubicación no disponible";
-      document.getElementById("return-location").textContent = dropoffLocation || "Ubicación no disponible";
-      document.getElementById("vehicle-info").textContent = `${selectedVehicle.marca} ${selectedVehicle.modelo}`;
-      document.getElementById("total-cost").textContent = totalCost.toFixed(2);
+  updateTotalCost();
+  document.getElementById("rental-popup").classList.remove("hidden");
+}
 
-      // Mostrar el pop-up
-      rentalPopup.classList.remove("hidden");
-    }
+function submitRentalForm() {
+  const name = document.getElementById("name").value;
+  const lastname = document.getElementById("lastname").value;
+  const passport = document.getElementById("passport").value;
+  const email = document.getElementById("email").value;
+  const insuranceName = localStorage.getItem("insuranceName");
+  const insuranceCost = parseFloat(localStorage.getItem("insuranceCost")) || 0;
 
-    // Cerrar el pop-up
-    function closePopup() {
-      rentalPopup.classList.add("hidden");
-    }
+  if (!/^[1-9][0-9]*$/.test(passport)) {
+    alert("El pasaporte debe ser un número mayor a 9.");
+    return;
+  }
 
-    // Función para enviar los datos al API
-    function submitRentalForm() {
-      const name = document.getElementById("name").value;
-      const lastname = document.getElementById("lastname").value;
-      const passport = document.getElementById("passport").value;
-      const email = document.getElementById("email").value;
+  const pickupDate = localStorage.getItem("pickupDate");
+  const dropoffDate = localStorage.getItem("dropoffDate");
+  const pickupLocation = localStorage.getItem("pickupLocation");
+  const dropoffLocation = localStorage.getItem("dropoffLocation");
+  const selectedVehicle = JSON.parse(localStorage.getItem("selectedVehicle"));
+  const date1 = new Date(pickupDate);
+  const date2 = new Date(dropoffDate);
+  const daysDiff = Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24));
+  const totalCost = selectedVehicle.precioDia * daysDiff + 200 + insuranceCost;
 
-      if (!/^[1-9][0-9]*$/.test(passport)) {
-        alert("El pasaporte debe ser un número mayor a 9.");
-        return;
-      }
+  const rentalData = {
+    fechaRecogida: pickupDate,
+    fechaEntrega: dropoffDate,
+    lugarRecogida: pickupLocation,
+    lugarEntrega: dropoffLocation,
+    vehiculo: `${selectedVehicle.marca} ${selectedVehicle.modelo}`,
+    costoTotal: totalCost,
+    seguro: insuranceName,
+    nombre: name,
+    apellido: lastname,
+    pasaporte: passport,
+    correo: email
+  };
 
-      const pickupDate = localStorage.getItem("pickupDate");
-      const dropoffDate = localStorage.getItem("dropoffDate");
-      const pickupLocation = localStorage.getItem("pickupLocation");
-      const dropoffLocation = localStorage.getItem("dropoffLocation");
-      const selectedVehicle = JSON.parse(localStorage.getItem("selectedVehicle"));
-      const date1 = new Date(pickupDate);
-      const date2 = new Date(dropoffDate);
-      const daysDiff = Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24));
-      const totalCost = selectedVehicle.precioDia * daysDiff;
+  fetch("https://localhost:7184/Reservas", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(rentalData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert("Renta realizada con éxito.");
+    window.location.href = "index.html";
+  })
+  .catch(error => console.error("Error:", error));
+}
 
-      const rentalData = {
-        name,
-        lastname,
-        passport,
-        email,
-        fechaRecogida: pickupDate,
-        fechaEntrega: dropoffDate,
-        lugarRecogida: pickupLocation,
-        lugarEntrega: dropoffLocation,
-        marca: selectedVehicle.marca,
-        modelo: selectedVehicle.modelo,
-        totalCost
-      };
-
-      fetch("https://localhost:7184/Reservas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(rentalData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        alert("Renta realizada con éxito.");
-        closePopup();
-      })
-      .catch(error => console.error("Error:", error));
-    }
   </script>
 
   </body>
