@@ -1,6 +1,6 @@
 // Función para obtener las categorías desde el API y llenar el select
 function loadCategories() {
-  fetch("https://localhost:7184/Categoria")
+  fetch("https://www.rtrentacar.somee.com/Categoria")
     .then(response => response.json())
     .then(data => {
       const categorySelect = document.getElementById("category");
@@ -36,7 +36,7 @@ document.getElementById("search-btn").addEventListener("click", function (event)
   localStorage.setItem("dropoffDate", dropoffDate);
 
   // Realiza el llamado al API solo con la categoría
-  fetch(`https://localhost:7184/Vehiculos/categoria?categoria=${category}`)
+  fetch(`https://www.rtrentacar.somee.com/Categoria?categoria=${category}`)
     .then(response => response.json())
     .then(data => {
       console.log("Datos recibidos del API:", data); // Verificar datos
