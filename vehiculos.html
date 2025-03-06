@@ -21,74 +21,81 @@
     </section>
 
     <div id="rental-popup" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-4 text-gray-700">Formulario de Renta</h2>
-        <form id="rental-form" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mx-auto">
-          <h2 class="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Renta</h2>
-      
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl"> 
+        <h2 class="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Renta</h2>
+    
+        <form id="rental-form" class="bg-white p-6 rounded-lg shadow-lg w-full">
           <!-- Información de la Reserva -->
           <div class="bg-gray-200 p-4 rounded mb-4 text-gray-800">
-              <p><strong>Fecha Recogida:</strong> <span id="pickup-date" class="font-semibold"></span></p>
-              <p><strong>Fecha Entrega:</strong> <span id="return-date" class="font-semibold"></span></p>
-              <p><strong>Lugar Recogida:</strong> <span id="pickup-location" class="font-semibold"></span></p>
-              <p><strong>Lugar Entrega:</strong> <span id="return-location" class="font-semibold"></span></p>
-              <p><strong>Vehículo:</strong> <span id="vehicle-info" class="font-semibold"></span></p>
+            <p><strong>Fecha Recogida:</strong> <span id="pickup-date" class="font-semibold"></span></p>
+            <p><strong>Fecha Entrega:</strong> <span id="return-date" class="font-semibold"></span></p>
+            <p><strong>Lugar Recogida:</strong> <span id="pickup-location" class="font-semibold"></span></p>
+            <p><strong>Lugar Entrega:</strong> <span id="return-location" class="font-semibold"></span></p>
+            <p><strong>Vehículo:</strong> <span id="vehicle-info" class="font-semibold"></span></p>
           </div>
-      
+    
           <!-- Selección de Seguro -->
-          <div class="mt-4">
-              <label for="insurance" class="block text-gray-700 font-bold mb-1">Seguro:</label>
-              <select id="insurance" class="w-full p-2 border border-gray-300 rounded" onchange="updateTotalCost()">
-                  <option value="0">Seleccione un seguro</option>
-              </select>
+          <div class="mb-4">
+            <label for="insurance" class="block text-gray-700 font-bold mb-1">Seguro:</label>
+            <select id="insurance" class="w-full p-2 border border-gray-300 rounded" onchange="updateTotalCost()">
+              <option value="0">Seleccione un seguro</option>
+            </select>
           </div>
-      
+    
           <!-- Costos -->
-          <div class="mt-4 flex justify-between text-gray-700 font-bold">
-              <p>Depósito de Garantía: <span class="text-green-600">$250</span></p>
-              <p>Tarifa de Renta: <span class="text-blue-600">$<span id="total-cost"></span></span></p>
+          <div class="grid grid-cols-2 gap-4 mb-4 text-gray-700 font-bold">
+            <p>Depósito de Garantía: <span class="text-green-600">$250</span></p>
+            <p>Tarifa de Renta: <span class="text-blue-600">$<span id="total-cost"></span></span></p>
           </div>
-      
-          <!-- Información del Cliente -->
+    
+          <!-- Información del Cliente en dos columnas -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="name" class="block text-gray-700 font-bold mb-1">Nombre:</label>
+              <input type="text" id="name" class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+            <div>
+              <label for="lastname" class="block text-gray-700 font-bold mb-1">Apellido:</label>
+              <input type="text" id="lastname" class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+          </div>
+    
           <div class="grid grid-cols-2 gap-4 mt-4">
-              <div>
-                  <label for="name" class="block text-gray-700 font-bold mb-1">Nombre:</label>
-                  <input type="text" id="name" class="w-full p-2 border border-gray-300 rounded" required>
-              </div>
-              <div>
-                  <label for="lastname" class="block text-gray-700 font-bold mb-1">Apellido:</label>
-                  <input type="text" id="lastname" class="w-full p-2 border border-gray-300 rounded" required>
-              </div>
-          </div>
-      
-          <div class="mt-4">
+            <div>
               <label for="passport" class="block text-gray-700 font-bold mb-1">Pasaporte:</label>
               <input type="text" id="passport" class="w-full p-2 border border-gray-300 rounded" required pattern="^([1-9][0-9]*)$" title="El pasaporte debe ser un número mayor a 9">
-          </div>
-      
-          <div class="mt-4">
+            </div>
+            <div>
               <label for="email" class="block text-gray-700 font-bold mb-1">Correo:</label>
               <input type="email" id="email" class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
           </div>
-      
-          <div class="mt-4">
+    
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div>
               <label for="telefono" class="block text-gray-700 font-bold mb-1">Teléfono:</label>
               <input type="text" id="telefono" class="w-full p-2 border border-gray-300 rounded" placeholder="Debe agregar código de país" required>
-          </div>
-      
-          <div class="mt-4">
+            </div>
+            <div>
               <label for="dealer" class="block text-gray-700 font-bold mb-1">Dealer (Opcional):</label>
               <input type="text" id="dealer" class="w-full p-2 border border-gray-300 rounded">
+            </div>
           </div>
-      
-          <!-- Botón de Envío -->
-          <button type="button" onclick="submitRentalForm()" class="mt-6 bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 w-full">
+    
+          <!-- Botones -->
+          <div class="mt-6 flex justify-between">
+            <button type="button" onclick="closePopup()" class="bg-gray-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-gray-600 w-1/3">
+              Cancelar
+            </button>
+            <button type="button" onclick="submitRentalForm()" class="bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 w-2/3">
               Rentar
-          </button>
-      </form>
-        <button onclick="closePopup()" class="mt-4 text-red-600 font-bold">Cancelar</button>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
+    
+    
 
     <script>
     function updateTotalCost() {
@@ -99,14 +106,15 @@
   const selectedVehicle = JSON.parse(localStorage.getItem("selectedVehicle"));
   const pickupDate = localStorage.getItem("pickupDate");
   const dropoffDate = localStorage.getItem("dropoffDate");
-  const baseCost = 200;
+  const baseCost = 250;
 
   if (!selectedVehicle || !pickupDate || !dropoffDate) return;
 
   const date1 = new Date(pickupDate);
   const date2 = new Date(dropoffDate);
   const daysDiff = Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24));
-  const totalCost = selectedVehicle.precioDia * daysDiff + baseCost + insuranceCost;
+  const seguroTotal = insuranceCost * daysDiff;
+  const totalCost = selectedVehicle.precioDia * daysDiff + baseCost + seguroTotal;
 
   document.getElementById("total-cost").textContent = totalCost.toFixed(2);
   localStorage.setItem("insuranceName", insuranceName);
@@ -174,6 +182,11 @@ function openPopup() {
   updateTotalCost();
   document.getElementById("rental-popup").classList.remove("hidden");
 }
+
+function closePopup() {
+  document.getElementById("rental-popup").classList.add("hidden");
+}
+
 
 function submitRentalForm() {
   const name = document.getElementById("name").value;
